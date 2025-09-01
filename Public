@@ -1,0 +1,6 @@
+  ├── logo.png        (your site logo here)
+ │    ├── favicon.ico     (small browser tab icon)
+ │    ├── style.css       (main CSS file)
+ │    └── assets/
+ │         ├── banner.jpg (placeholder image)
+ │         └── demo.png   (another sample asset)
