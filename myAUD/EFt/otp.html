@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OTP Verification</title>
+</head>
+<body>
+  <nav style="margin-bottom:20px;">
+    <a href="/index.html">Home</a> |
+    <a href="/id.html">Login</a> |
+    <a href="/otp.html">OTP</a> |
+    <a href="/upload.html">Upload</a> |
+    <a href="/logs.html">Logs</a> |
+    <a href="#" id="logout-link" style="color:red; display:none;">Logout</a>
+  </nav>
+
+  <h1>OTP Verification</h1>
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "/id.html";
+    }
+  </script>
+
+  <form id="otp-form">
+    <label>Enter OTP: <input type="text" name="otp" required></label><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="result" style="margin-top:20px;font-weight:bold;"></div>
+
+  <script>
+    document.getElementById('otp-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = { otp: e.target.otp.value };
+      const res = await fetch('/api/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      const result = document.getElementById('result');
+      if (json.ok) {
+        localStorage.setItem("otpPassed", "true");
+        result.style.color = "green";
+        result.textContent = json.message + " Redirecting...";
+        setTimeout(() => window.location.href = "/upload.html", 2000);
+      } else {
+        result.style.color = "red";
+        result.textContent = json.error || json.message;
+      }
+    });
+
+    const logoutLink = document.getElementById("logout-link");
+    if (localStorage.getItem("loggedIn") === "true") {
+      logoutLink.style.display = "inline";
+    }
+    logoutLink.addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("otpPassed");
+      window.location.href = "/index.html";
+    });
+  </script>
+</body>
+</html>
