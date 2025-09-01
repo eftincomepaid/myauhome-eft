@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logs</title>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "/id.html";
+    } else if (localStorage.getItem("otpPassed") !== "true") {
+      window.location.href = "/otp.html";
+    }
+  </script>
+
+  <nav style="margin-bottom:20px;">
+    <a href="/index.html">Home</a> |
+    <a href="/id.html">Login</a> |
+    <a href="/otp.html">OTP</a> |
+    <a href="/upload.html">Upload</a> |
+    <a href="/logs.html">Logs</a> |
+    <a href="#" id="logout-link" style="color:red; display:none;">Logout</a>
+  </nav>
+
+  <h1>Logs</h1>
+  <pre id="logs">Loading...</pre>
+
+  <script>
+    async function loadLogs() {
+      const res = await fetch('/api/logs');
+      const json = await res.json();
+      document.getElementById('logs').textContent = JSON.stringify(json, null, 2);
+    }
+    loadLogs();
+
+    const logoutLink = document.getElementById("logout-link");
+    if (localStorage.getItem("loggedIn") === "true") {
+      logoutLink.style.display = "inline";
+    }
+    logoutLink.addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("otpPassed");
+      window.location.href = "/index.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+<body>
+  <nav style="margin-bottom:20px;">
+    <a href="/index.html">Home</a> |
+    <a href="/id.html">Login</a> |
+    <a href="/otp.html">OTP</a> |
+    <a href="/upload.html">Upload</a> |
+    <a href="/logs.html">Logs</a> |
+    <a href="#" id="logout-link" style="color:red; display:none;">Logout</a>
+  </nav>
+  <h1>Welcome</h1>
+  <p>This is the demo portal flow.</p>
+  <script>
+    const logoutLink = document.getElementById("logout-link");
+    if (localStorage.getItem("loggedIn") === "true") {
+      logoutLink.style.display = "inline";
+    }
+    logoutLink.addEventListener("click", e => {
+      e.preventDefault();
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("otpPassed");
+      window.location.href = "/index.html";
+    });
+  </script>
+</body>
+</html>
